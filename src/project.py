@@ -47,6 +47,37 @@ class Particle:
         self.surface.set_alpha(self.alpha)
         surface.blit(self.surface, self.pos)
 
+class Comet(Particle):
+    def __init__(self, pos=(0, 0), size=5, life=2000, color=None, speed=5):
+        super().__init__(pos, size, life, color)
+        self.speed = speed
+        self.surface = self.update_surface()
+        self.direction = random.choice(['left', 'right', 'up', 'down'])
+        self.radius = random.randint(50, 200) 
+        self.angle = random.uniform(0, 2 * math.pi)  
+
+    def update(self, dt, mouse_pos):
+        self.age += dt
+        if self.age > self.life:
+            self.dead = True
+        self.alpha = 255 * (1 - (self.age / self.life))
+
+        if self.direction == 'curve':
+            self.pos[0] = self.radius * math.cos(self.angle)
+            self.pos[1] = self.radius * math.sin(self.angle)
+            self.angle += self.speed / self.radius  
+        
+        if self.direction == 'left':
+            self.pos[0] -= self.speed
+        elif self.direction == 'right':
+            self.pos[0] += self.speed
+        elif self.direction == 'up':
+            self.pos[1] -= self.speed
+        elif self.direction == 'down':
+            self.pos[1] += self.speed
+
+        self.avoid_mouse(mouse_pos)
+
 
 if __name__ == "__main__":
     main()
