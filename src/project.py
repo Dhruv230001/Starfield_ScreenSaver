@@ -78,6 +78,47 @@ class Comet(Particle):
 
         self.avoid_mouse(mouse_pos)
 
+class Starfield:
+    def __init__(self, screen_res):
+        self.screen_res = screen_res
+        self.particle_size = 2
+        self.birth_rate = 5  
+        self.comet_rate = 0.01  
+        self.particles = []
+
+    def update(self, dt, mouse_pos):
+        self._birth_new_particles()
+        self._update_particles(dt, mouse_pos)
+
+    def _update_particles(self, dt, mouse_pos):
+        for particle in self.particles[:]:
+            particle.update(dt, mouse_pos)
+            if particle.dead:
+                self.particles.remove(particle)
+
+    def _birth_new_particles(self):
+        for count in range(self.birth_rate):
+            x = random.randint(0, self.screen_res[0])
+            y = random.randint(0, self.screen_res[1])
+            pos = (x, y)
+            life = random.randint(1000, 3000)
+            color = random.choice([pygame.Color(255, 165, 0), pygame.Color(0, 255, 0)])  
+            particle = Particle(pos, self.particle_size, life, color)
+            self.particles.append(particle)
+        
+        if random.random() < self.comet_rate:
+            x = self.screen_res[0]
+            y = random.randint(0, self.screen_res[1])
+            pos = (x, y)
+            life = random.randint(2000, 4000)
+            color = random.choice([pygame.Color(255, 165, 0), pygame.Color(0, 255, 0)])  
+            comet = Comet(pos, size=8, life=life, color=color, speed=8)
+            self.particles.append(comet)
+
+    def draw(self, surface):
+        for particle in self.particles:
+            particle.draw(surface)
+
 
 if __name__ == "__main__":
     main()
