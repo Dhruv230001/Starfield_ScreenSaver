@@ -119,6 +119,16 @@ class Starfield:
         for particle in self.particles:
             particle.draw(surface)
 
+def main():
+    pygame.init()
+    pygame.display.set_caption("Starfield Screensaver")  
+    clock = pygame.time.Clock()  
+    dt = 0  
+    resolution = (1920, 1080)  
+    screen = pygame.display.set_mode(resolution, pygame.FULLSCREEN)  
+    starfield = Starfield(resolution)  
+    running = True  
+
 
 if __name__ == "__main__":
     main()
