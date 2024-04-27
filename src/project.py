@@ -127,7 +127,22 @@ def main():
     resolution = (1920, 1080)  
     screen = pygame.display.set_mode(resolution, pygame.FULLSCREEN)  
     starfield = Starfield(resolution)  
-    running = True  
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+        mouse_pos = pygame.mouse.get_pos()
+        starfield.update(dt, mouse_pos)
+        black = pygame.Color(0, 0, 0)
+        screen.fill(black)
+        starfield.draw(screen)
+        pygame.display.flip()
+        dt = clock.tick(60)
+
 
 
 if __name__ == "__main__":
