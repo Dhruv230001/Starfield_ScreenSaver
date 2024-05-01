@@ -61,11 +61,6 @@ class Comet(Particle):
         if self.age > self.life:
             self.dead = True
         self.alpha = 255 * (1 - (self.age / self.life))
-
-        if self.direction == 'curve':
-            self.pos[0] = self.radius * math.cos(self.angle)
-            self.pos[1] = self.radius * math.sin(self.angle)
-            self.angle += self.speed / self.radius  
         
         if self.direction == 'left':
             self.pos[0] -= self.speed
